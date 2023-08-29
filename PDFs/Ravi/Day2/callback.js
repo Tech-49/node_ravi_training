@@ -3,7 +3,7 @@
 // Promise
 // Async/Await
 
-const skills = ["Node.js", "React", "Python"];
+/*onst skills = ["Node.js", "React", "Python"];
 
 function getUser(callback) {
     setTimeout(function () {
@@ -18,4 +18,13 @@ getUser(function (user) {
     console.log(skills)
 });
 
-console.log("After");
+console.log("After");*/
+
+
+
+console.log("First program Run")
+
+setTimeout(function () {
+    console.log("Third program Run")
+}, 2000)
+console.log("Second program Run")
