@@ -1,4 +1,4 @@
-/*function getSkills(callback) {
+function getSkills(callback) {
     setTimeout(function () {
         callback(["Node.js", "React", "Python", "php", "javaScript"]);
     }, 1000)
@@ -50,7 +50,7 @@ function add(num1, num2, callback) {
     }, 7000)
 }
 add(10, 20, sayHello)
-add(10, 30, sayHi)*/
+add(10, 30, sayHi)
 
 
 class User {
@@ -70,3 +70,16 @@ let userInfo = new User();
 userInfo.getUser("ravi", 33, "junagadh")
 userInfo.getUser("hardik", 32, "ahemdabad")
 userInfo.allUser()
+
+
+function addition(callback) {
+    setTimeout(function () {
+        callback(("hello hi how are you"));
+    }, 2000)
+}
+addition(function (result) {
+    console.log(result);
+})
+
+console.log("hello")
+console.log("hi...")
