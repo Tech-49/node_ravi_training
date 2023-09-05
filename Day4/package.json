@@ -1,0 +1,20 @@
+{
+  "name": "Day4",
+  "version": "1.0.4",
+  "description": "This project generate PDF files from HTML files.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node app.js",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "pdf",
+    "preview",
+    "anhasweb"
+  ],
+  "author": "Hardik Raval",
+  "license": "ISC",
+  "dependencies": {
+    "underscore": "^1.13.6"
+  }
+}
