@@ -5,6 +5,13 @@ let app = express();
 app.get("/api/customers", function (req, res) {
     res.send(["ravi", "hardik", "john", "mark"])
 })
+
+app.get("/api/customers/details", function (req, res) {
+    res.send([{ id: 1, name: "ravi" },
+    { id: 2, name: "hardik" },
+    { id: 3, name: "john" },
+    { id: 4, name: "mark" }]);
+})
 app.get("/", function (req, res) {
     res.send("Welcome to Anhas Web")
 })
