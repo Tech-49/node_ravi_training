@@ -104,3 +104,8 @@ console.log(result);*/
 // 17.object //
 let result = underscore.object(['hardik', 'ravi', 'john'], [30, 40, 50]);
 console.log(result);*/
+
+
+// 18. //
+let result = underscore.sortedIndex([10, 20, 30, 40, 50], 20, 30);
+console.log(result);
