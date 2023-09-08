@@ -3,10 +3,10 @@ const app = express();
 
 const customers = [
     { id: 1, name: "mark", contact: "9978524896" },
-    { id: 3, name: "ravi", contact: "9685458785" },
-    { id: 4, name: "ravi", contact: "9899569854" },
-    { id: 5, name: "hardik", contact: "8484569854" },
-    { id: 6, name: "john", contact: "968722647" }
+    { id: 2, name: "ravi", contact: "9685458785" },
+    { id: 3, name: "mahi", contact: "9899569854" },
+    { id: 4, name: "hardik", contact: "8484569854" },
+    { id: 5, name: "john", contact: "968722647" }
 ];
 
 
@@ -23,8 +23,9 @@ app.get("/api/customers", function (req, res) {
 });
 
 
-app.get("/api/customers/1", function (req, res) {
-    const customer = customers.filter((customer) => customer.id == 1)
+app.get("/api/customers/:customerId", function (req, res) {
+    let cid = req.params.customerId;
+    const customer = customers.filter((customer) => customer.id == cid)
     res.send(customer);
 });
 
@@ -32,4 +33,17 @@ app.post("/api/customers", function (req, res) {
     let newId = customers.length + 1;
     customers.push({ id: newId, name: "akon", contact: "968722854" + newId })
     res.send("User created successfully");
+});
+
+app.put("/api/customers/:customerId", function (req, res) {
+    const cid = req.params.customerId;
+    let newName = "amul";
+    customers[cid].name = newName;
+    res.send("User updated successfully");
+});
+
+app.delete("/api/customers", function (req, res) {
+    // let newId = customers.length + 1;
+    customers.delete({ id: 2 })
+    res.send("User deleted successfully");
 });
