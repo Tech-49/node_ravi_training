@@ -31,7 +31,7 @@ app.get("/api/customers/:customerId", function (req, res) {
 
 app.post("/api/customers", function (req, res) {
     let newId = customers.length + 1;
-    customers.push({ id: newId, name: "akon", contact: "968722854" + newId })
+    customers.push({ id: newId, name: "dipak", contact: "968722854" + newId })
     res.send("User created successfully");
 });
 
@@ -42,8 +42,10 @@ app.put("/api/customers/:customerId", function (req, res) {
     res.send("User updated successfully");
 });
 
-app.delete("/api/customers", function (req, res) {
-    // let newId = customers.length + 1;
-    customers.delete({ id: 2 })
-    res.send("User deleted successfully");
+app.delete("/api/customers/:customerId", function (req, res) {
+    const cid = req.params.customerId
+    const customer = customers.filter((letter) => {
+        return letter !== cid;
+    })
+    res.send(`User deleted successfully `);
 });
