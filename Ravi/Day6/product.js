@@ -26,5 +26,12 @@ app.get("/api/product/:productNo", function (req, res) {
 app.post("/api/product/", function (req, res) {
     const pNo = products.length + 1;
     products.push({ pNo: pNo, productName: "cycle", price: 9000, color: "white" });
-    res.send("Product created successfully");
+    res.send("Product create successfully");
 })
+
+app.put("/api//:customerId", function (req, res) {
+    const cid = req.params.customerId;
+    let newName = "laptopBag";
+    products[cid].productName = newName;
+    res.send("User updated successfully");
+});

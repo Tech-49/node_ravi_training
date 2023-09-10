@@ -1,3 +1,4 @@
+const e = require("express");
 const express = require("express");
 const app = express();
 
@@ -25,8 +26,14 @@ app.get("/api/customers", function (req, res) {
 
 app.get("/api/customers/:customerId", function (req, res) {
     let cid = req.params.customerId;
-    const customer = customers.filter((customer) => customer.id == cid)
-    res.send(customer);
+    const customer = customers.filter((customer) => {
+        if (customer.id === cid) {
+            res.send(customer);
+        }
+        else {
+            res.send("customer  not found enter the valid number")
+        }
+    })
 });
 
 app.post("/api/customers", function (req, res) {
@@ -42,10 +49,11 @@ app.put("/api/customers/:customerId", function (req, res) {
     res.send("User updated successfully");
 });
 
-app.delete("/api/customers/:customerId", function (req, res) {
+/*app.delete("/api/customers/:customerId", function (req, res) {
     const cid = req.params.customerId
+    
     const customer = customers.filter((letter) => {
         return letter !== cid;
     })
     res.send(`User deleted successfully `);
-});
+});*/
