@@ -2,10 +2,10 @@ const express = require("express");
 const app = express();
 
 const products = [
-    { pNo: 1, productName: "Laptop", price: 45000, color: "silver" },
-    { pNo: 2, productName: "Mobile", price: 15000, color: "blue" },
-    { pNo: 3, productName: "T.v", price: 18000, color: "black" },
-    { pNo: 4, productName: "Headphone", price: 800, color: "red" }
+    { pNo: 1, productName: "Laptop", price: 45000, color: "silver", active: 0 },
+    { pNo: 2, productName: "Mobile", price: 15000, color: "red", active: 0 },
+    { pNo: 3, productName: "T.v", price: 18000, color: "blue", active: 0 },
+    { pNo: 4, productName: "Headphone", price: 800, color: "red", active: 1 }
 ];
 
 app.listen(3400, function () {

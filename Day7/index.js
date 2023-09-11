@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+app.use(express.json()); // middleware.
 
 const customers = [
     { id: 1, name: "mark" },
@@ -7,11 +8,6 @@ const customers = [
     { id: 3, name: "hardik" },
     { id: 4, name: "john" }
 ];
-
-// GET / - welcome
-// GET /api/customers - all customer
-// GET /api/customers/1 - single customer
-// POST /api/customers - Create
 
 // GET
 app.get("/", function (req, res) {
@@ -31,8 +27,23 @@ app.get("/api/customers", function (req, res) {
 });
 
 app.get("/api/customers/:customerId", function (req, res) {
+    // params -> req.params -> /api/customers/:customerId
+    // body -> req.body -> Sending via client request.
+    // query -> req.query -> /api/customers/:customerId?skills=1&eduction=2&active=1
+
+    const customerSkills = ["PHP", "Node.js"];
     const cid = req.params.customerId;
-    const customer = customers.filter((customer) => customer.id == cid);
+    const customer = customers.find((customer) => customer.id == cid);
+
+    // Optional
+    if (req.query.skills == "1") {
+        customer.skills = customerSkills;
+    }
+
+    if (!customer) {
+        res.status(404).send("No user found.");
+        return;
+    }
     res.send(customer);
 });
 
@@ -42,9 +53,20 @@ app.get("/api/customers/:customerId", function (req, res) {
 // });
 
 app.post("/api/customers", function (req, res) {
-    const newId = customers.length + 1;
-    customers.push({ id: newId, name: "Hardik" + newId })
-    res.send("Customer created successfully");
+    // console.log(req.body);
+    const customerId = req.body.id;
+    const customerName = req.body.name;
+
+    // Validation.
+    if (customerName == "") {
+        // 400 - Validation failed.
+        // 404 - Not found.
+        res.status(400).send("Customer name is required.");
+        return;
+    }
+    const newCustomer = { id: customerId, name: customerName };
+    customers.push(newCustomer)
+    res.send(newCustomer);
 });
 
 app.put("/api/customers/2", function (req, res) {
@@ -56,6 +78,8 @@ app.put("/api/customers/2", function (req, res) {
 app.delete("/api/customers/2", function (req, res) {
     res.send("User deleted successfully");
 });
+
+// Query string.
 
 app.listen(3300, function () {
     console.log("Server is running at port 3300");
