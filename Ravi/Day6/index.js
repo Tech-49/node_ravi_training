@@ -49,11 +49,10 @@ app.put("/api/customers/:customerId", function (req, res) {
     res.send("User updated successfully");
 });
 
-/*app.delete("/api/customers/:customerId", function (req, res) {
+app.delete("/api/customers/:customerId", function (req, res) {
     const cid = req.params.customerId
-    
-    const customer = customers.filter((letter) => {
-        return letter !== cid;
-    })
+    indexToDelete = cid;
+    customers.splice(indexToDelete, 1);
+
     res.send(`User deleted successfully `);
-});*/
+});

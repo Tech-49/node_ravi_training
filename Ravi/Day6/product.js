@@ -29,9 +29,17 @@ app.post("/api/product/", function (req, res) {
     res.send("Product create successfully");
 })
 
-app.put("/api//:customerId", function (req, res) {
+app.put("/api/product/:productNo", function (req, res) {
     const cid = req.params.customerId;
     let newName = "laptopBag";
     products[cid].productName = newName;
     res.send("User updated successfully");
+});
+
+app.delete("/api/products/:productNo", function (req, res) {
+    const cid = req.params.productNo
+    indexToDelete = cid;
+    products.splice(indexToDelete, 1);
+
+    res.send(`User deleted successfully `);
 });
