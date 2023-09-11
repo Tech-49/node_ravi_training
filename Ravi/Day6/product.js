@@ -39,7 +39,11 @@ app.put("/api/product/:productNo", function (req, res) {
 app.delete("/api/products/:productNo", function (req, res) {
     const cid = req.params.productNo
     indexToDelete = cid;
-    products.splice(indexToDelete, 1);
+    if (products.splice(indexToDelete, 1)) {
+        res.send(`User deleted successfully `);
+    }
+    else {
+        res.send(`This product is not found`);
+    }
 
-    res.send(`User deleted successfully `);
 });
