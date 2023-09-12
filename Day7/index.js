@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 app.use(express.json()); // middleware.
+const Joi = require('joi');
 
 const customers = [
     { id: 1, name: "mark" },
@@ -30,6 +31,15 @@ app.get("/api/customers/:customerId", function (req, res) {
     // params -> req.params -> /api/customers/:customerId
     // body -> req.body -> Sending via client request.
     // query -> req.query -> /api/customers/:customerId?skills=1&eduction=2&active=1
+    const schema = Joi.object({
+        customerId: Joi.string().min(1).max(3).required()
+    });
+
+    const { error } = schema.validate(req.params);
+    if (error) {
+        res.status(400).send({ "message": error.details[0].message });
+        return;
+    }
 
     const customerSkills = ["PHP", "Node.js"];
     const cid = req.params.customerId;
@@ -53,7 +63,19 @@ app.get("/api/customers/:customerId", function (req, res) {
 // });
 
 app.post("/api/customers", function (req, res) {
-    // console.log(req.body);
+
+    const schema = Joi.object({
+        id: Joi.string().min(1).max(3).required(),
+        name: Joi.string().min(3).max(40).required()
+    });
+
+    const { error } = schema.validate(req.body);
+
+    if (error) {
+        res.status(400).send(error.details[0].message);
+        return;
+    }
+
     const customerId = req.body.id;
     const customerName = req.body.name;
 
@@ -61,7 +83,7 @@ app.post("/api/customers", function (req, res) {
     if (customerName == "") {
         // 400 - Validation failed.
         // 404 - Not found.
-        res.status(400).send("Customer name is required.");
+        res.status(400).send({ "message": error.details[0].message });
         return;
     }
     const newCustomer = { id: customerId, name: customerName };
