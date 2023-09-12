@@ -6,7 +6,7 @@ const products = [
     { pNo: 2, productName: "Mobile", price: 15000, color: "blue" },
     { pNo: 3, productName: "T.v", price: 18000, color: "black" },
     { pNo: 4, productName: "Headphone", price: 800, color: "red" },
-    { pNo: 5, productName: "cycle", price: 7500, color: "yellow" }
+    { pNo: 5, productName: "cycle", price: 7500, color: "blue" }
 ];
 
 app.listen(3400, function () {
