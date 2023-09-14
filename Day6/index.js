@@ -44,7 +44,7 @@ app.get("/api/customers/:customerId", function (req, res) {
 app.post("/api/customers", function (req, res) {
     const newId = customers.length + 1;
     customers.push({ id: newId, name: "Hardik" + newId })
-    res.send("User created successfully");
+    res.send("Customer created successfully");
 });
 
 app.put("/api/customers/2", function (req, res) {
