@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 app.use(express.json());
-const Joi = require('joi');
+const joi = require("joi")
 
 const users = [
     { id: 1, name: "mark", email: "mark@anhasweb.com", password: "12345", password_reset_token: "" },
@@ -16,6 +16,15 @@ app.get("/api/users", function (req, res) {
 });
 
 app.post("/api/login/", function (req, res) {
+    const schema = joi.object({
+        email: joi.required().valid({ allow: ['com', 'net'] }),
+        password: joi.required().min(6).max(15)
+    })
+    const { error } = schema.validate(req.body);
+    if (error) {
+        res.send(error)
+        return;
+    }
     users.forEach(function (num) {
         if (num.email == req.body.email && num.password == req.body.password) {
             res.send("Login was successful");
@@ -23,29 +32,14 @@ app.post("/api/login/", function (req, res) {
             res.status(400).send("Invalid username or password")
         }
     });
-    // const schema = Joi.object({
-    //     email: Joi.required().valid({ allow: ['com', 'net'] }),
-    //     password: Joi.required().min(6).max(15)
-    // })
-    // const { error } = schema.validate(req.body);
-    // if (error) {
-    //     res.send(error)
-    //     return;
-    // }
+
 });
 
 app.post("/api/register", function (req, res) {
-    const userName = req.body.name;
-    const userEmail = req.body.email;
-    const userPassword = req.body.password;
-
-    const user = { name: userName, email: userEmail };
-    res.send(user)
-
-    const schema = Joi.object({
-        name: Joi.string().required().max(15).min(3),
-        email: Joi.required().valid({ allow: ['com', 'net'] }),
-        password: Joi.required().min(6).max(15)
+    const schema = joi.object({
+        name: joi.string().required().min(3).max(15),
+        email: joi.required().valid({ allow: ['com', 'net'] }),
+        password: joi.required().min(6).max(15)
     })
     const { error } = schema.validate(req.body);
     if (error) {
@@ -53,15 +47,27 @@ app.post("/api/register", function (req, res) {
         return;
     }
 
+    const userName = req.body.name;
+    const userEmail = req.body.email;
+    const userPassword = req.body.password;
+    const user = { name: userName, email: userEmail };
+    res.send(user)
+
     const newUser = { name: userName, userEmail, password: userPassword }
     users.push(newUser);
     res.send("Registration was successful.");
-
 });
 
-
-
 app.post("/api/forgot-password", function (req, res) {
+    const schema = joi.object({
+        email: joi.required().valid({ allow: ['com', 'net'] })
+    })
+    const { error } = schema.validate(req.body);
+    if (error) {
+        res.send(error)
+        return;
+    }
+
     users.forEach(function (num) {
         if (num.email == req.body.email) {
             res.send("Forgot password request was successful");
@@ -69,21 +75,19 @@ app.post("/api/forgot-password", function (req, res) {
             res.status(400).send("Email address is required")
         }
     });
+});
 
-    const schema = Joi.object({
-        email: Joi.required().valid({ allow: ['com', 'net'] })
+
+app.post("/api/reset-password/:password_reset_token", function (req, res) {
+    /*const schema = joi.object({
+        email: joi.required().valid({ allow: ['com', 'net'] })
     })
     const { error } = schema.validate(req.body);
     if (error) {
         res.send(error)
         return;
-    }
-});
+    }*/
 
-
-
-
-app.post("/api/reset-password/:password_reset_token", function (req, res) {
     users.forEach(function (num) {
         if (num.email == req.body.email) {
             res.send("Password reset successfully.");
@@ -91,14 +95,6 @@ app.post("/api/reset-password/:password_reset_token", function (req, res) {
             res.status(400).send("Invalid password token or email address.");
         }
     });
-    const schema = Joi.object({
-        email: Joi.required().valid({ allow: ['com', 'net'] })
-    })
-    const { error } = schema.validate(req.body);
-    if (error) {
-        res.send(error)
-        return;
-    }
 });
 
 
