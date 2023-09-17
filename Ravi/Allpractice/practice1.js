@@ -81,16 +81,20 @@ app.post("/api/forgot-password", function (req, res) {
     });
     const { error } = schema.validate(req.body);
     if (error) {
-        return res.send({ "message": error.details[0].message })
+        return res.send({ "message": error.details[0].message });
     }
 
-    let result = users.find((user) => (user.email === req.body.email))
-    if (result)
+    const userEmail = req.body.email
+    let result = users.filter(user => (user.email == userEmail));
+    let finalR = result.map(val => val.email);
+
+    if (finalR == userEmail) {
         return res.send({
             success: true,
             message: "Forgot password request was successful.",
             password_reset_token: "waLKzyOFYH6qfd2UKP6GlAZxlysnKd19Av2ZmB"
         });
+    }
     else {
         return res.status(400).send({
             success: false,
@@ -98,6 +102,7 @@ app.post("/api/forgot-password", function (req, res) {
         });
     }
 });
+
 
 
 app.post("/api/reset-password/:password_reset_token", function (req, res) {
@@ -133,3 +138,24 @@ app.listen(3000, function () {
 
 
 
+/*const users = [
+    { id: 1, name: "mark", email: "mark@anhasweb.com", password: "123456", password_reset_token: "" },
+    { id: 2, name: "ravi", email: "ravi@anhasweb.com", password: "980980", password_reset_token: "" },
+    { id: 3, name: "mahi", email: "mahi@anhasweb.com", password: "234765", password_reset_token: "" },
+    { id: 4, name: "hardik", email: "hardik@anhasweb.com", password: "126473", password_reset_token: "" },
+    { id: 5, name: "john", email: "john@anhasweb.com", password: "293837", password_reset_token: "" }
+];
+console.log("wel come");
+
+let body = "mark@anhasweb.com";
+const newArry = users.filter(val => val.email == body);
+console.log(newArry);
+
+const NweA = newArry.map((val) => {
+    return val.email
+})
+console.log(NweA);
+if (NweA == body) {
+    console.log("true");
+}
+*/
