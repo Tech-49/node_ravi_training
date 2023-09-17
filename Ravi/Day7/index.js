@@ -86,8 +86,8 @@ app.put("/api/customers/:customerId", function (req, res) {
 
 app.delete("/api/customers/:customerId", function (req, res) {
     const cid = req.params.customerId
-    indexToDelete = cid;
-    customers.splice(indexToDelete, 1);
+    const index = customers.findIndex(customer => customer.id === cid);
+    const result = customers.splice(index, 1);
 
-    res.send(`User deleted successfully `);
+    res.send(`User deleted successfully${{ result }}`);
 });

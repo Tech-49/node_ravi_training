@@ -1,10 +1,10 @@
 const express = require("express");
 const app = express();
 app.use(express.json());
-const joi = require("joi")
+const joi = require("joi");
 
 const users = [
-    { id: 1, name: "mark", email: "mark@anhasweb.com", password: "12345", password_reset_token: "" },
+    { id: 1, name: "mark", email: "mark@anhasweb.com", password: "123456", password_reset_token: "" },
     { id: 2, name: "ravi", email: "ravi@anhasweb.com", password: "980980", password_reset_token: "" },
     { id: 3, name: "mahi", email: "mahi@anhasweb.com", password: "234765", password_reset_token: "" },
     { id: 4, name: "hardik", email: "hardik@anhasweb.com", password: "126473", password_reset_token: "" },
@@ -12,93 +12,124 @@ const users = [
 ];
 
 app.get("/api/users", function (req, res) {
-    res.send(users);
+    return res.send(users);
 });
 
 app.post("/api/login/", function (req, res) {
     const schema = joi.object({
-        email: joi.required().valid({ allow: ['com', 'net'] }),
-        password: joi.required().min(6).max(15)
+        email: joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
+        password: joi.string().required().min(6).max(15)
     })
     const { error } = schema.validate(req.body);
     if (error) {
-        res.send(error)
-        return;
+        return res.send({ "message": error.details[0].message });
     }
-    users.forEach(function (num) {
-        if (num.email == req.body.email && num.password == req.body.password) {
-            res.send("Login was successful");
-        } else {
-            res.status(400).send("Invalid username or password")
-        }
-    });
 
+    const result = users.find((user) => user.email === req.body.email && user.password === req.body.password)
+    if (result) {
+        return res.send({
+            success: true,
+            message: "Login was successful",
+            token: "1r1PjHbAd6ZgOfNnNVeeG5xB4eQDz4Jya08QUFmL6D6M"
+        });
+    }
+    else {
+        return res.status(400).send({
+            success: false,
+            error_message: "Invalid username or password."
+        });
+    }
 });
 
 app.post("/api/register", function (req, res) {
+    const userEmail = req.body.email;
+    if (userEmail === "") {
+        return res.status(400).send({
+            success: false,
+            error_message: "Email address is required."
+        });
+    }
     const schema = joi.object({
         name: joi.string().required().min(3).max(15),
-        email: joi.required().valid({ allow: ['com', 'net'] }),
-        password: joi.required().min(6).max(15)
+        email: joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
+        password: joi.string().required().min(6).max(15)
     })
     const { error } = schema.validate(req.body);
     if (error) {
-        res.send(error)
-        return;
+        return res.send({ "message": error.details[0].message });
     }
 
     const userName = req.body.name;
-    const userEmail = req.body.email;
     const userPassword = req.body.password;
-    const user = { name: userName, email: userEmail };
-    res.send(user)
 
     const newUser = { name: userName, userEmail, password: userPassword }
     users.push(newUser);
-    res.send("Registration was successful.");
+    const finalResponse = {
+        success: true,
+        message: "Registration was successful.",
+        user: {
+            name: userName,
+            email: userEmail
+        }
+    }
+    return res.send(finalResponse);
 });
 
 app.post("/api/forgot-password", function (req, res) {
     const schema = joi.object({
-        email: joi.required().valid({ allow: ['com', 'net'] })
-    })
+        email: joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
+    });
     const { error } = schema.validate(req.body);
     if (error) {
-        res.send(error)
-        return;
+        return res.send({ "message": error.details[0].message })
     }
 
-    users.forEach(function (num) {
-        if (num.email == req.body.email) {
-            res.send("Forgot password request was successful");
-        } else {
-            res.status(400).send("Email address is required")
-        }
-    });
+    let result = users.find((user) => (user.email === req.body.email))
+    if (result)
+        return res.send({
+            success: true,
+            message: "Forgot password request was successful.",
+            password_reset_token: "waLKzyOFYH6qfd2UKP6GlAZxlysnKd19Av2ZmB"
+        });
+    else {
+        return res.status(400).send({
+            success: false,
+            error_message: "Email address is required."
+        });
+    }
 });
 
 
 app.post("/api/reset-password/:password_reset_token", function (req, res) {
-    /*const schema = joi.object({
-        email: joi.required().valid({ allow: ['com', 'net'] })
-    })
+    const schema = joi.object({
+        email: joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
+    });
     const { error } = schema.validate(req.body);
     if (error) {
-        res.send(error)
-        return;
-    }*/
+        return res.send({ "message": error.details[0].message })
+    }
 
-    users.forEach(function (num) {
-        if (num.email == req.body.email) {
-            res.send("Password reset successfully.");
-        } else {
-            res.status(400).send("Invalid password token or email address.");
-        }
-    });
+    const result = users.find((user) => user.email == req.body.email);
+    if (result)
+        return res.send({
+            success: true,
+            message: "Password reset successfully."
+        });
+    else {
+        return res.status(400).send({
+            success: false,
+            error_message: "Invalid password token or email address."
+        });
+    }
 });
-
-
 
 app.listen(3000, function () {
     console.log("server is running ");
 });
+
+
+
+
+
+
+
