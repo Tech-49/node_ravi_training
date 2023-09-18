@@ -88,11 +88,22 @@ app.post("/api/forgot-password", function (req, res) {
     let result = users.filter(user => (user.email == userEmail));
     let finalR = result.map(val => val.email);
 
+    function generateRandomToken() {
+        const tokenLength = 32;
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let token = '';
+        for (let i = 0; i < tokenLength; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            token += characters.charAt(randomIndex);
+        }
+        return token;
+    }
+
     if (finalR == userEmail) {
         return res.send({
             success: true,
             message: "Forgot password request was successful.",
-            password_reset_token: "waLKzyOFYH6qfd2UKP6GlAZxlysnKd19Av2ZmB"
+            password_reset_token: generateRandomToken()
         });
     }
     else {
