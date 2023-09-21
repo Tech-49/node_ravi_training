@@ -11,16 +11,16 @@ const num = [1, 2, 3, 4, 5, 6];
 let evens = underscore.filter(num, function (num) { return num % 2 == 0; });
 console.log(evens);*/
 
-/*
+
 // 3.where //
-let timeTable = [
+/*let timeTable = [
     { subject: 1, sName: "python", lecturer: "hardik" },
     { subject: 2, sName: "node", lecturer: "ravi" },
     { subject: 3, sName: "php", lecturer: "john" },
     { subject: 4, sName: "node", lecturer: "raviya" }
 ];
 getMysubject = underscore.where(timeTable, { sName: "node" },);
-console.log(getMysubject)*/
+console.log(getMysubject);*/
 
 /*
 // 4.reject //
@@ -34,11 +34,11 @@ let getNumbers = [2, 4, 6];
 let result = underscore.every(getNumbers, function (num) { return num % 2 == 0; });
 console.log(result);*/
 
-/*
+
 // 6.contains //
 const anyNumber = [1, 2, 3, 4, 5, 6, 7];
-let result = underscore.contains(anyNumber, 8);
-console.log(result)*/
+let result = underscore.contains(anyNumber, 7);
+console.log(result)
 
 /*
 // 7.pluck //
@@ -107,5 +107,5 @@ console.log(result);*/
 
 
 // 18. //
-let result = underscore.sortedIndex([10, 20, 30, 40, 50], 20, 30);
-console.log(result);
+/*let result = underscore.sortedIndex([10, 20, 30, 40, 50], 20, 30);
+console.log(result);*/

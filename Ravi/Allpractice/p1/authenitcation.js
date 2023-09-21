@@ -12,7 +12,6 @@ const users = [
 const user = function (req, res) {
     return res.send(users);
 }
-
 const login = function (req, res) {
     const schema = joi.object({
         email: joi.string().required().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
@@ -38,8 +37,6 @@ const login = function (req, res) {
         });
     }
 }
-
-
 const register = function (req, res) {
     const userEmail = req.body.email;
     const schema = joi.object({
@@ -71,7 +68,6 @@ const register = function (req, res) {
     }
     return res.send(finalResponse);
 }
-
 const forgotPassword = function (req, res) {
     const schema = joi.object({
         email: joi.string().required().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
