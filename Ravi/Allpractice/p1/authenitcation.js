@@ -13,6 +13,7 @@ const user = function (req, res) {
     return res.send(users);
 }
 const login = function (req, res) {
+
     const schema = joi.object({
         email: joi.string().required().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
         password: joi.string().required().min(6).max(15)
