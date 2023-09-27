@@ -3,6 +3,7 @@ const joi = require("joi");
 const CustomerModel = require("./models/customerModel");
 
 const createCustomer = async function (req, res) {
+    console.log("test")
     const schema = joi.object({
         name: joi.string().required(),
         email: joi.string().required().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
@@ -20,18 +21,19 @@ const createCustomer = async function (req, res) {
 }
 const getCustomers = async function (req, res) {
     console.log("Get all customers calling..");
-    let allCustomer = await CustomerModel.fine();
-    if (!allCustomer) {
-        return res.status(400).send("customer not found");
-    }
-    res.send(allCustomer);
+    let customers = await CustomerModel.find()
+    res.send(customers);
 }
 const singleCustomer = async function (req, res) {
     const cid = req.params.customerId;
-    const customer = await CustomerModel.findOne({ _id: cid });
-    if (!customer) {
-        return res.status(400).send("no customer found");
-    }
+    const customer = await CustomerModel.findOne(
+        { _id: cid }
+    )
+    // if (!customer) {
+    //     return res.status(400).send("no customer found");
+    // }
+    res.send(customer)
+
 }
 const deleteCustomer = async function (req, res) {
     await CustomerModel.findOneAndRemove(req.params.customerId);
